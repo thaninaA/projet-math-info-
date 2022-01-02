@@ -75,30 +75,30 @@ def tridiag(a, b, c):
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-def lu_1(A): 
-	# U= A  #attention U=A, modifiction des deux  
-	U = np.copy(A) 
+def lu_1(A):  
+	# récupérer la ttaille de la matrice  A 
+    n=len(A) 
+	# initialiser L 
+    L = np.eye(len(A)) 
+	# initialiser U 
+    U = np.copy(A)
+     	
+	# parcourir la matrice A ligne par ligne 
+    for i in range(n):
+	pivot = U[i,i] 
+	assert pivot != 0, "Non respect de condition nécéssaire et suffisante de factorisation LU"
+	for j in range(i+1,n): 
+		# diviser les éléments de la diagonale suppérieure de U par le pivot 
+		s= -U[j,i]/pivot   
+		
+		# mettre à jour la ligne de la matrice U par combinaison linéaire 
+		U[j] = U[j]+(s*U[i])
 
-	# récupérer la taille de la matrice 
-	n= A.shape[0] 
-	
-	# initialiser la matrice L 
-	L= L= np.eye(n)  
-
-	for i in range(n):  
-
-		# choisir le pivot (elements de la diagonale)
-		pivot = U[i,i]  
-		assert pivot != 0, "Non respect de condition nécéssaire et suffisante de factorisation LU"
-		for j  in range(i+1,n): 
-			L[j,i] = (U[j,i]/pivot)  # les ellements de la diagonle  pivot sont non nuls 
-			U[j]= U[j] - L[j,i]*U[i] 
-
-
-	for i in range(n):
-		for j in range(i):
-			U[i,j]=0 
-	return L,U 
+		# mettre à jour les éléments L[j,i]
+		L[j,i] = -s 
+    L=np.eye(n)+ L  
+    return L,U
+    
 
 
 
